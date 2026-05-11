@@ -10,7 +10,7 @@ import PromptCard   from "../components/PromptCard";
 import PromptModal  from "../components/PromptModal";
 import DeleteModal  from "../components/DeleteModal";
 import EmptyState   from "../components/EmptyState";
-import EmptyState   from "../components/TagPill";
+import TagPill  from "../components/TagPill";
 
 
 export default function Fituroption() {
