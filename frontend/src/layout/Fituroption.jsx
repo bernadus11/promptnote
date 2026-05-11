@@ -224,110 +224,209 @@ export default function Fituroption() {
         </div>
       </div>
 
+
+
       {/* ── Body: Sidebar + Main ── */}
       <div style={{
         maxWidth: 1200, margin: "0 auto",
-        padding: "24px 24px 0",
-        display: "flex", gap: 20, alignItems: "flex-start",
+        padding: "24px 16px 0",
       }}>
 
-        {/* Sidebar */}
-        <aside style={{
-          width: 220, flexShrink: 0,
-          background: "#fff", borderRadius: 18, border: "1px solid #F1F5F9",
-          padding: "20px 14px", position: "sticky", top: 76,
-        }}>
-          <p style={{ margin: "0 0 12px 6px", fontSize: 10, fontWeight: 700, color: "#CBD5E1", letterSpacing: ".08em", textTransform: "uppercase" }}>
-            Tipe Prompt
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-            {CATEGORY_LIST.map((cat) => {
-              const active = activeCategory === cat.name;
-              return (
-                <button
-                  key={cat.name}
-                  className="cat-btn"
-                  onClick={() => setActiveCategory(cat.name)}
-                  style={{
-                    width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
-                    padding: "9px 12px", borderRadius: 10, border: "none",
-                    background: active ? "linear-gradient(135deg,#6D28D9,#4F46E5)" : "transparent",
-                    color: active ? "#fff" : "#64748B",
-                    fontWeight: active ? 700 : 500, fontSize: 13, cursor: "pointer",
-                    boxShadow: active ? "0 2px 10px rgba(109,40,217,.22)" : "none",
-                    textAlign: "left",
-                  }}
-                >
-                  <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <Icon n={cat.icon} size={15} style={{ color: active ? "#C4B5FD" : "#94A3B8" }} />
-                    {cat.name}
-                  </span>
-                  <span style={{
-                    fontSize: 11, fontWeight: 700, padding: "1px 8px", borderRadius: 999,
-                    background: active ? "rgba(255,255,255,.2)" : "#F1F5F9",
-                    color: active ? "#fff" : "#94A3B8",
-                  }}>{counts[cat.name] ?? 0}</span>
-                </button>
-              );
-            })}
-          </div>
+        {/* ── Kategori — horizontal scroll di mobile, sidebar di desktop ── */}
 
-          {/* Ringkasan */}
-          <div style={{ margin: "20px 0 0", borderTop: "1px solid #F1F5F9", paddingTop: 16 }}>
-            <p style={{ margin: "0 0 10px 6px", fontSize: 10, fontWeight: 700, color: "#CBD5E1", letterSpacing: ".08em", textTransform: "uppercase" }}>
-              Ringkasan
-            </p>
-            {[
-              { label: "Total",    value: prompts.length },
-              { label: "Favorit",  value: prompts.filter((p) => p.starred).length },
-              { label: "Kategori", value: CATEGORY_LIST.length - 1 },
-            ].map((s) => (
-              <div key={s.label} style={{ display: "flex", justifyContent: "space-between", padding: "6px 6px", fontSize: 12 }}>
-                <span style={{ color: "#94A3B8" }}>{s.label}</span>
-                <span style={{ color: "#0F172A", fontWeight: 700 }}>{s.value}</span>
-              </div>
-            ))}
-          </div>
-        </aside>
-
-        {/* Main content */}
-        <main style={{ flex: 1, minWidth: 0 }}>
-
-          {/* Search bar */}
-          <div style={{ position: "relative", marginBottom: 16 }}>
-            <div style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)" }}>
-              <Icon n="search" size={15} style={{ color: "#94A3B8" }} />
-            </div>
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Cari prompt berdasarkan judul, isi, atau tag..."
-              style={{
-                width: "100%", padding: "12px 40px 12px 40px",
-                border: "1.5px solid #E5E7EB", borderRadius: 12,
-                fontSize: 13, color: "#0F172A", background: "#fff",
-                outline: "none", boxShadow: "0 1px 4px rgba(0,0,0,.04)",
-              }}
-            />
-            {search && (
+        {/* Mobile: horizontal scroll pill */}
+        <div className="flex md:hidden gap-2 overflow-x-auto pb-3 mb-4"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+          {CATEGORY_LIST.map((cat) => {
+            const active = activeCategory === cat.name;
+            return (
               <button
-                onClick={() => setSearch("")}
+                key={cat.name}
+                onClick={() => setActiveCategory(cat.name)}
                 style={{
+                  display: "flex", alignItems: "center", gap: 6,
+                  padding: "7px 14px", borderRadius: 999, border: "none",
+                  background: active ? "linear-gradient(135deg,#6D28D9,#4F46E5)" : "#F1F5F9",
+                  color: active ? "#fff" : "#64748B",
+                  fontWeight: active ? 700 : 500, fontSize: 12,
+                  cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0,
+                  boxShadow: active ? "0 2px 10px rgba(109,40,217,.22)" : "none",
+                }}
+              >
+                <i className={`ti ti-${cat.icon}`} style={{ fontSize: 13 }} />
+                {cat.name}
+                <span style={{
+                  fontSize: 10, fontWeight: 700, padding: "1px 6px", borderRadius: 999,
+                  background: active ? "rgba(255,255,255,.25)" : "#E2E8F0",
+                  color: active ? "#fff" : "#94A3B8",
+                }}>{counts[cat.name] ?? 0}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Desktop: sidebar + main side by side */}
+        <div className="hidden md:flex gap-20 items-flex-start">
+
+          {/* Sidebar */}
+          <aside style={{
+            width: 220, flexShrink: 0,
+            background: "#fff", borderRadius: 18, border: "1px solid #F1F5F9",
+            padding: "20px 14px", position: "sticky", top: 76,
+          }}>
+            <p style={{ margin: "0 0 12px 6px", fontSize: 10, fontWeight: 700, color: "#CBD5E1", letterSpacing: ".08em", textTransform: "uppercase" }}>
+              Tipe Prompt
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+              {CATEGORY_LIST.map((cat) => {
+                const active = activeCategory === cat.name;
+                return (
+                  <button
+                    key={cat.name}
+                    className="cat-btn"
+                    onClick={() => setActiveCategory(cat.name)}
+                    style={{
+                      width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+                      padding: "9px 12px", borderRadius: 10, border: "none",
+                      background: active ? "linear-gradient(135deg,#6D28D9,#4F46E5)" : "transparent",
+                      color: active ? "#fff" : "#64748B",
+                      fontWeight: active ? 700 : 500, fontSize: 13, cursor: "pointer",
+                      boxShadow: active ? "0 2px 10px rgba(109,40,217,.22)" : "none",
+                      textAlign: "left",
+                    }}
+                  >
+                    <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <i className={`ti ti-${cat.icon}`} style={{ fontSize: 15, color: active ? "#C4B5FD" : "#94A3B8" }} />
+                      {cat.name}
+                    </span>
+                    <span style={{
+                      fontSize: 11, fontWeight: 700, padding: "1px 8px", borderRadius: 999,
+                      background: active ? "rgba(255,255,255,.2)" : "#F1F5F9",
+                      color: active ? "#fff" : "#94A3B8",
+                    }}>{counts[cat.name] ?? 0}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Ringkasan */}
+            <div style={{ margin: "20px 0 0", borderTop: "1px solid #F1F5F9", paddingTop: 16 }}>
+              <p style={{ margin: "0 0 10px 6px", fontSize: 10, fontWeight: 700, color: "#CBD5E1", letterSpacing: ".08em", textTransform: "uppercase" }}>
+                Ringkasan
+              </p>
+              {[
+                { label: "Total",    value: prompts.length },
+                { label: "Favorit",  value: prompts.filter((p) => p.starred).length },
+                { label: "Kategori", value: CATEGORY_LIST.length - 1 },
+              ].map((s) => (
+                <div key={s.label} style={{ display: "flex", justifyContent: "space-between", padding: "6px 6px", fontSize: 12 }}>
+                  <span style={{ color: "#94A3B8" }}>{s.label}</span>
+                  <span style={{ color: "#0F172A", fontWeight: 700 }}>{s.value}</span>
+                </div>
+              ))}
+            </div>
+          </aside>
+
+          {/* Main content desktop */}
+          <main style={{ flex: 1, minWidth: 0 }}>
+            {/* Search bar */}
+            <div style={{ position: "relative", marginBottom: 16 }}>
+              <div style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)" }}>
+                <i className="ti ti-search" style={{ fontSize: 15, color: "#94A3B8" }} />
+              </div>
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Cari prompt berdasarkan judul, isi, atau tag..."
+                style={{
+                  width: "100%", padding: "12px 40px 12px 40px",
+                  border: "1.5px solid #E5E7EB", borderRadius: 12,
+                  fontSize: 13, color: "#0F172A", background: "#fff",
+                  outline: "none", boxShadow: "0 1px 4px rgba(0,0,0,.04)", boxSizing: "border-box",
+                }}
+              />
+              {search && (
+                <button onClick={() => setSearch("")} style={{
                   position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
                   width: 22, height: 22, borderRadius: "50%", border: "none",
                   background: "#E5E7EB", display: "flex", alignItems: "center",
                   justifyContent: "center", cursor: "pointer",
-                }}
-              >
-                <Icon n="x" size={12} style={{ color: "#94A3B8" }} />
+                }}>
+                  <i className="ti ti-x" style={{ fontSize: 12, color: "#94A3B8" }} />
+                </button>
+              )}
+            </div>
+
+            {/* Section header */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+              <div>
+                <span style={{ fontSize: 16, fontWeight: 700, color: "#0F172A" }}>
+                  {activeCategory === "Semua" ? "Semua Prompt" : activeCategory}
+                </span>
+                <span style={{ marginLeft: 8, fontSize: 12, color: "#94A3B8" }}>
+                  {sorted.length} prompt
+                </span>
+              </div>
+              {sorted.length > 0 && (
+                <button onClick={handleAdd} style={{
+                  display: "flex", alignItems: "center", gap: 6,
+                  padding: "8px 14px", borderRadius: 9, border: "1.5px solid #E5E7EB",
+                  background: "white", color: "#374151", fontSize: 12, fontWeight: 600, cursor: "pointer",
+                }}>
+                  <i className="ti ti-plus" style={{ fontSize: 13, color: "#6D28D9" }} /> Tambah
+                </button>
+              )}
+            </div>
+
+            {/* Prompt list */}
+            {sorted.length === 0
+              ? <EmptyState onAdd={handleAdd} />
+              : (
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {sorted.map((p) => (
+                    <PromptCard key={p.id} prompt={p} onEdit={handleEdit} onDelete={setDeleteTarget} />
+                  ))}
+                </div>
+              )
+            }
+          </main>
+        </div>
+
+        {/* Mobile: main content full width (tanpa sidebar) */}
+        <div className="flex md:hidden flex-col gap-4">
+
+          {/* Search bar */}
+          <div style={{ position: "relative" }}>
+            <div style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)" }}>
+              <i className="ti ti-search" style={{ fontSize: 15, color: "#94A3B8" }} />
+            </div>
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Cari prompt..."
+              style={{
+                width: "100%", padding: "12px 40px 12px 40px",
+                border: "1.5px solid #E5E7EB", borderRadius: 12,
+                fontSize: 13, color: "#0F172A", background: "#fff",
+                outline: "none", boxShadow: "0 1px 4px rgba(0,0,0,.04)", boxSizing: "border-box",
+              }}
+            />
+            {search && (
+              <button onClick={() => setSearch("")} style={{
+                position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
+                width: 22, height: 22, borderRadius: "50%", border: "none",
+                background: "#E5E7EB", display: "flex", alignItems: "center",
+                justifyContent: "center", cursor: "pointer",
+              }}>
+                <i className="ti ti-x" style={{ fontSize: 12, color: "#94A3B8" }} />
               </button>
             )}
           </div>
 
           {/* Section header */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div>
-              <span style={{ fontSize: 16, fontWeight: 700, color: "#0F172A" }}>
+              <span style={{ fontSize: 15, fontWeight: 700, color: "#0F172A" }}>
                 {activeCategory === "Semua" ? "Semua Prompt" : activeCategory}
               </span>
               <span style={{ marginLeft: 8, fontSize: 12, color: "#94A3B8" }}>
@@ -335,15 +434,12 @@ export default function Fituroption() {
               </span>
             </div>
             {sorted.length > 0 && (
-              <button
-                onClick={handleAdd}
-                style={{
-                  display: "flex", alignItems: "center", gap: 6,
-                  padding: "8px 14px", borderRadius: 9, border: "1.5px solid #E5E7EB",
-                  background: "white", color: "#374151", fontSize: 12, fontWeight: 600, cursor: "pointer",
-                }}
-              >
-                <Icon n="plus" size={13} style={{ color: "#6D28D9" }} /> Tambah
+              <button onClick={handleAdd} style={{
+                display: "flex", alignItems: "center", gap: 6,
+                padding: "8px 14px", borderRadius: 9, border: "1.5px solid #E5E7EB",
+                background: "white", color: "#374151", fontSize: 12, fontWeight: 600, cursor: "pointer",
+              }}>
+                <i className="ti ti-plus" style={{ fontSize: 13, color: "#6D28D9" }} /> Tambah
               </button>
             )}
           </div>
@@ -359,9 +455,8 @@ export default function Fituroption() {
               </div>
             )
           }
-        </main>
+        </div>
       </div>
-
       <Footer />
     </div>
   );

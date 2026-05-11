@@ -24,31 +24,25 @@ export default function Footer() {
   return (
     <footer
       className="relative overflow-hidden"
-      style={{ background: "#17274c", padding: "40px 40px 0", marginTop: 80 }}
+      style={{ background: "#17274c", padding: "40px 24px 0", marginTop: 80 }}
     >
       {/* Dot grid */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-        }}
-      />
-      {/* Glow */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          top: -100, left: "50%", transform: "translateX(-50%)",
-          width: 500, height: 200,
-          background: "rgba(167,139,250,0.18)", borderRadius: "50%",
-        }}
-      />
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px)",
+        backgroundSize: "28px 28px",
+      }} />
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 2 }}>
-        <div style={{
-          display: "grid", gridTemplateColumns: "1.8fr 1fr 1fr",
-          gap: 32, paddingBottom: 28, alignItems: "start",
-        }}>
+      {/* Glow */}
+      <div className="absolute pointer-events-none" style={{
+        top: -100, left: "50%", transform: "translateX(-50%)",
+        width: 500, height: 200,
+        background: "rgba(167,139,250,0.18)", borderRadius: "50%",
+      }} />
+
+      <div className="max-w-6xl mx-auto relative" style={{ zIndex: 2 }}>
+
+        {/* Grid — 1 kolom mobile, 3 kolom desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8">
 
           {/* Kolom kiri — brand */}
           <div>
@@ -94,7 +88,7 @@ export default function Footer() {
                     background: "rgba(255,255,255,0.12)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                   }}>
-                    <i className={`ti ${icon}`} style={{ fontSize: 12, color: "#fff" }} aria-hidden="true" />
+                    <i className={`ti ${icon}`} style={{ fontSize: 12, color: "#fff" }} />
                   </div>
                   <div>
                     <div style={{ fontSize: 11.5, fontWeight: 600, color: "#fff" }}>{title}</div>
@@ -115,10 +109,7 @@ export default function Footer() {
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
               {navLinks.map(({ icon, label, href, onClick }) => (
-                <a
-                  key={label}
-                  href={href}
-                  onClick={onClick}
+                <a key={label} href={href} onClick={onClick}
                   style={{
                     display: "flex", alignItems: "center", gap: 7,
                     padding: "7px 10px", borderRadius: 8, fontSize: 12.5,
@@ -136,7 +127,7 @@ export default function Footer() {
                     e.currentTarget.style.color       = "rgba(255,255,255,0.78)";
                   }}
                 >
-                  <i className={`ti ${icon}`} style={{ fontSize: 14, color: "rgba(255,255,255,0.4)" }} aria-hidden="true" />
+                  <i className={`ti ${icon}`} style={{ fontSize: 14, color: "rgba(255,255,255,0.4)" }} />
                   {label}
                 </a>
               ))}
@@ -154,18 +145,16 @@ export default function Footer() {
             <p style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", lineHeight: 1.6, marginBottom: 12 }}>
               Gratis selamanya untuk penggunaan dasar. Tidak perlu kartu kredit.
             </p>
-            <Link
-              to="/Login"
-              style={{
-                display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-                padding: "9px 16px", borderRadius: 8,
-                background: "#fff", color: "#6d28d9",
-                fontSize: 12.5, fontWeight: 700, textDecoration: "none", transition: "opacity .15s",
-              }}
+            <Link to="/Login" style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+              padding: "9px 16px", borderRadius: 8,
+              background: "#fff", color: "#6d28d9",
+              fontSize: 12.5, fontWeight: 700, textDecoration: "none", transition: "opacity .15s",
+            }}
               onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
               onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
             >
-              <i className="ti ti-rocket" style={{ fontSize: 14 }} aria-hidden="true" /> Daftar Gratis
+              <i className="ti ti-rocket" style={{ fontSize: 14 }} /> Daftar Gratis
             </Link>
           </div>
         </div>
@@ -174,7 +163,8 @@ export default function Footer() {
         <div style={{
           borderTop: "1px solid rgba(255,255,255,0.12)",
           padding: "12px 0 14px",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
+          display: "flex", flexWrap: "wrap", gap: 8,
+          alignItems: "center", justifyContent: "space-between",
         }}>
           <p style={{ fontSize: 11, color: "rgba(255,255,255,0.38)", margin: 0 }}>
             © 2026 PromptNote. All rights reserved.
@@ -184,7 +174,7 @@ export default function Footer() {
             background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.11)",
             borderRadius: 999, padding: "3px 9px", fontSize: 10, color: "rgba(255,255,255,0.4)",
           }}>
-            <i className="ti ti-shield-check" style={{ fontSize: 11 }} aria-hidden="true" /> Aman & Terenkripsi
+            <i className="ti ti-shield-check" style={{ fontSize: 11 }} /> Aman & Terenkripsi
           </div>
         </div>
       </div>
